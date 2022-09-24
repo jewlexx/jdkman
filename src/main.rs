@@ -1,5 +1,3 @@
-use tokio::fs::create_dir;
-
 use crate::adoptiumapi::{get_version_name, list_versions};
 
 #[macro_use]
@@ -17,7 +15,6 @@ lazy_static::lazy_static! {
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
     logger::init_subscriber();
-
     env::init_jdkman_home().await?;
 
     let args = args::JdkManArgs::parse();
