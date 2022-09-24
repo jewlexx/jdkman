@@ -1,4 +1,7 @@
+use parking_lot::Mutex;
 use serde::{Deserialize, Serialize};
+
+pub static Config: Mutex<JdkConfig> = Mutex::new(JdkConfig::default());
 
 #[derive(Debug, Default, Deserialize, Serialize)]
 pub struct JdkConfig {
@@ -26,6 +29,11 @@ pub async fn init_jdkman_home() -> Result<(), tokio::io::Error> {
         tokio::fs::write(&jdkman_config, "").await?;
     } else {
         debug!("jdkman config already exists");
+        let config = tokio::fs::read_to_string(&jdkman_config).await?;
+
+        let config: JdkConfig = toml::from_str(&config).unwrap();
+
+        *Config.lock() = config;
     }
 
     Ok(())
