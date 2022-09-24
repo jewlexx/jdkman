@@ -5,6 +5,7 @@ extern crate tracing;
 
 mod adoptiumapi;
 mod args;
+mod env;
 mod logger;
 
 lazy_static::lazy_static! {
