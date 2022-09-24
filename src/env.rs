@@ -13,6 +13,7 @@ pub fn get_java_home() -> Option<String> {
     std::env::var_os("JAVA_HOME").map(|path| path.into_string().unwrap())
 }
 
+#[derive(Debug)]
 pub struct Path(Vec<String>);
 
 impl From<String> for Path {

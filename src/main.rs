@@ -25,7 +25,7 @@ async fn main() -> anyhow::Result<()> {
         .map(get_version_name)
         .collect::<Vec<String>>();
 
-    debug!("Windows Path: {}", env::get_windows_path());
+    debug!("Windows Path: {:?}", env::get_windows_path());
 
     debug!("Found versions: {:?}", versions_parsed);
 
