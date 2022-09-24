@@ -108,7 +108,6 @@ pub struct License {
     pub name: Name,
     pub spdx_id: SpdxId,
     pub url: Option<String>,
-    pub node_id: LicenseNodeId,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -172,18 +171,6 @@ pub enum Name {
     #[serde(rename = "MIT License")]
     MitLicense,
     Other,
-}
-
-#[derive(Debug, Serialize, Deserialize)]
-pub enum LicenseNodeId {
-    #[serde(rename = "MDc6TGljZW5zZTg=")]
-    MDc6TGljZw5ZZTg,
-    #[serde(rename = "MDc6TGljZW5zZTEz")]
-    MDc6TGljZw5ZZtEz,
-    #[serde(rename = "MDc6TGljZW5zZTA=")]
-    MDc6TGljZw5ZZta,
-    #[serde(rename = "MDc6TGljZW5zZTI=")]
-    MDc6TGljZw5ZZti,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
