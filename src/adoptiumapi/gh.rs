@@ -1,3 +1,5 @@
+use std::future::{IntoFuture, Ready};
+
 use serde::{Deserialize, Serialize};
 
 pub type AdoptiumRepos = Vec<AdoptiumRepo>;
@@ -5,7 +7,7 @@ pub type AdoptiumRepos = Vec<AdoptiumRepo>;
 async fn get_repos() -> Result<AdoptiumRepos, reqwest::Error> {
     const URL: &str = "https://api.github.com/orgs/adoptium/repos";
 
-    reqwest::get(URL).await?.json().await
+    crate::CLIENT.get(URL).send().await?.json().await
 }
 
 pub async fn get_binary_repos() -> Result<AdoptiumRepos, reqwest::Error> {
