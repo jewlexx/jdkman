@@ -5,13 +5,14 @@ use serde::{Deserialize, Serialize};
 pub type AdoptiumRepos = Vec<AdoptiumRepo>;
 
 async fn get_repos() -> Result<AdoptiumRepos, reqwest::Error> {
-    const URL: &str = "https://api.github.com/orgs/adoptium/repos";
+    const URL: &str = "https://api.github.com/orgs/adoptium/repos?per_page=100";
 
     crate::CLIENT.get(URL).send().await?.json().await
 }
 
 pub async fn get_binary_repos() -> Result<AdoptiumRepos, reqwest::Error> {
     let repos = get_repos().await?;
+
     let binary_repos = repos
         .into_iter()
         .filter(|repo| repo.name.ends_with("-binaries"))

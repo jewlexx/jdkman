@@ -11,21 +11,17 @@ const LOG_LEVEL: Level = {
 
 #[instrument]
 pub fn init_subscriber() {
-    cfg_if::cfg_if! {
-        if #[cfg(debug_assertions)] {
-            let events = FmtSpan::NEW | FmtSpan::CLOSE | FmtSpan::ENTER | FmtSpan::EXIT;
-        } else {
-            let events = FmtSpan::CLOSE;
-        }
-    }
-
     debug!("Initializing logger");
 
-    tracing_subscriber::fmt()
-        .with_max_level(LOG_LEVEL)
-        .with_span_events(events)
-        .with_target(false)
-        .init();
+    let sub = tracing_subscriber::fmt().with_max_level(LOG_LEVEL);
+
+    cfg_if::cfg_if! {
+        if #[cfg(debug_assertions)] {
+            sub.with_span_events(FmtSpan::NEW | FmtSpan::CLOSE).init();
+        } else {
+            sub.init();
+        }
+    }
 
     debug!("Logger initialized");
 }

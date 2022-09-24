@@ -17,6 +17,7 @@ pub enum AdoptiumApiError {
     Version(#[from] ParseIntError),
 }
 
+#[instrument(level = "debug")]
 pub async fn list_versions() -> Result<Vec<u8>, AdoptiumApiError> {
     let binary_repos = gh::get_binary_repos().await?;
 
@@ -28,10 +29,9 @@ pub async fn list_versions() -> Result<Vec<u8>, AdoptiumApiError> {
 
             let name = binary.name.to_owned();
 
-            let int_chars = name
-                .chars()
-                .map(|c| if c.is_numeric() { c } else { ' ' })
-                .collect::<String>();
+            let int_chars = name.chars().filter(|c| c.is_numeric()).collect::<String>();
+
+            debug!("int_chars: {}", int_chars);
 
             int_chars.parse()
         })
