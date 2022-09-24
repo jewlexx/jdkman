@@ -10,6 +10,7 @@ anyhow = "1.0.65"
 bytes = "1.2.1"
 cfg-if = "1.0.0"
 clap = { version = "3.2.22", features = ["derive"] }
+dirs = "4.0.0"
 indicatif = { version = "0.17.1", features = ["tokio"] }
 lazy_static = "1.4.0"
 regex = "1.6.0"

@@ -16,6 +16,8 @@ lazy_static::lazy_static! {
 async fn main() -> anyhow::Result<()> {
     logger::init_subscriber();
 
+    let home_dir = dirs::home_dir().expect("failed to get home directory");
+
     let args = args::JdkManArgs::parse();
 
     let versions = list_versions().await?;
