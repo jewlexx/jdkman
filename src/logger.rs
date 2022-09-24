@@ -9,6 +9,7 @@ const LOG_LEVEL: Level = {
     }
 };
 
+#[instrument]
 pub fn init_subscriber() {
     cfg_if::cfg_if! {
         if #[cfg(debug_assertions)] {
@@ -18,9 +19,13 @@ pub fn init_subscriber() {
         }
     }
 
+    debug!("Initializing logger");
+
     tracing_subscriber::fmt()
         .with_max_level(LOG_LEVEL)
         .with_span_events(events)
         .with_target(false)
         .init();
+
+    debug!("Logger initialized");
 }
