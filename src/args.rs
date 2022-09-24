@@ -6,6 +6,7 @@ pub struct JdkManArgs {}
 
 impl JdkManArgs {
     pub fn parse() -> Self {
+        debug!("Parsing Args");
         clap::Parser::parse()
     }
 }
