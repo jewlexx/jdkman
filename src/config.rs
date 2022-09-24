@@ -1,5 +1,8 @@
+use serde::{Deserialize, Serialize};
+
+#[derive(Debug, Default, Deserialize, Serialize)]
 pub struct JdkConfig {
-    pub current_version: u8,
+    pub current_version: Option<u8>,
     pub installed_versions: Vec<u8>,
 }
 
