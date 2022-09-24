@@ -1,5 +1,22 @@
 use thiserror::Error as AsError;
 
+#[instrument]
+pub async fn init_jdkman_home() -> Result<(), tokio::io::Error> {
+    debug!("Creating jdkman home");
+
+    let jdkman_path = dirs::home_dir()
+        .expect("failed to get home directory")
+        .join(".jdkman");
+
+    if !jdkman_path.exists() {
+        tokio::fs::create_dir(jdkman_path).await?;
+    } else {
+        debug!("jdkman home already exists");
+    }
+
+    Ok(())
+}
+
 #[derive(Debug, AsError)]
 pub enum EnvError {
     #[error("could not get PATH environment variable")]
@@ -19,7 +36,7 @@ pub struct Path(Vec<String>);
 impl From<String> for Path {
     fn from(path: String) -> Self {
         let path_vec = path
-            .split(";")
+            .split(';')
             .map(|s| s.to_string())
             .collect::<Vec<String>>();
 

@@ -1,3 +1,5 @@
+use tokio::fs::create_dir;
+
 use crate::adoptiumapi::{get_version_name, list_versions};
 
 #[macro_use]
@@ -16,7 +18,7 @@ lazy_static::lazy_static! {
 async fn main() -> anyhow::Result<()> {
     logger::init_subscriber();
 
-    let home_dir = dirs::home_dir().expect("failed to get home directory");
+    env::init_jdkman_home().await?;
 
     let args = args::JdkManArgs::parse();
 
