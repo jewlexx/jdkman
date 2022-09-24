@@ -1,5 +1,3 @@
-use std::future::{IntoFuture, Ready};
-
 use serde::{Deserialize, Serialize};
 
 pub type AdoptiumRepos = Vec<AdoptiumRepo>;
