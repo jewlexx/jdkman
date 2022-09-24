@@ -1,16 +1,34 @@
 use parking_lot::Mutex;
 use serde::{Deserialize, Serialize};
+use thiserror::Error as AsError;
 
-pub static Config: Mutex<JdkConfig> = Mutex::new(JdkConfig::default());
+#[derive(Debug, AsError)]
+pub enum ConfigError {
+    #[error("failed to serialize config")]
+    SerializeError(#[from] toml::ser::Error),
+    #[error("failed to interact with system I/O")]
+    IoError(#[from] tokio::io::Error),
+}
 
-#[derive(Debug, Default, Deserialize, Serialize)]
+pub static CONFIG: Mutex<JdkConfig> = Mutex::new(JdkConfig::new());
+
+#[derive(Debug, Deserialize, Serialize)]
 pub struct JdkConfig {
     pub current_version: Option<u8>,
     pub installed_versions: Vec<u8>,
 }
 
+impl JdkConfig {
+    pub const fn new() -> Self {
+        Self {
+            current_version: None,
+            installed_versions: Vec::new(),
+        }
+    }
+}
+
 #[instrument]
-pub async fn init_jdkman_home() -> Result<(), tokio::io::Error> {
+pub async fn init_jdkman_home() -> Result<(), ConfigError> {
     debug!("Creating jdkman home");
 
     let jdkman_path = dirs::home_dir()
@@ -26,14 +44,16 @@ pub async fn init_jdkman_home() -> Result<(), tokio::io::Error> {
     let jdkman_config = jdkman_path.join("config.toml");
 
     if !jdkman_config.exists() {
-        tokio::fs::write(&jdkman_config, "").await?;
+        let config_bytes = toml::to_vec(&*CONFIG.lock())?;
+
+        tokio::fs::write(&jdkman_config, config_bytes).await?;
     } else {
         debug!("jdkman config already exists");
         let config = tokio::fs::read_to_string(&jdkman_config).await?;
 
         let config: JdkConfig = toml::from_str(&config).unwrap();
 
-        *Config.lock() = config;
+        *CONFIG.lock() = config;
     }
 
     Ok(())
