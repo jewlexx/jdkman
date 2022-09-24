@@ -43,8 +43,8 @@ pub async fn list_versions() -> Result<Vec<u8>, AdoptiumApiError> {
 /// This won't work if they update the binary repo names
 ///
 /// But it works for now :)
-pub fn get_version_name(version: u8) -> String {
-    format!("temurin{version}-binaries")
+pub fn get_version_name(version: impl std::ops::Deref<Target = u8>) -> String {
+    format!("temurin{}-binaries", *version)
 }
 
 #[derive(Debug, Serialize, Deserialize)]
