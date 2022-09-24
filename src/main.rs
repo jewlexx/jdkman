@@ -15,8 +15,6 @@ lazy_static::lazy_static! {
 async fn main() -> anyhow::Result<()> {
     logger::init_subscriber();
 
-    debug!("poggies");
-
     let args = args::JdkManArgs::parse();
 
     let versions = list_versions().await?;
