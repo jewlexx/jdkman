@@ -24,7 +24,5 @@ async fn main() -> anyhow::Result<()> {
         .map(get_version_name)
         .collect::<Vec<String>>();
 
-    println!("Hello, world!");
-
     Ok(())
 }
