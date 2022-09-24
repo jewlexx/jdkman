@@ -40,6 +40,13 @@ pub async fn list_versions() -> Result<Vec<u8>, AdoptiumApiError> {
     Ok(binary_versions)
 }
 
+/// This won't work if they update the binary repo names
+///
+/// But it works for now :)
+pub fn get_version_name(version: u8) -> String {
+    format!("temurin{version}-binaries")
+}
+
 #[derive(Debug, Serialize, Deserialize)]
 pub struct BinaryAdoptiumAsset {
     pub binary: Binary,
