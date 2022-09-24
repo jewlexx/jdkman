@@ -5,6 +5,7 @@ extern crate tracing;
 
 mod adoptiumapi;
 mod args;
+mod config;
 mod env;
 mod logger;
 
@@ -15,7 +16,7 @@ lazy_static::lazy_static! {
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
     logger::init_subscriber();
-    env::init_jdkman_home().await?;
+    config::init_jdkman_home().await?;
 
     let args = args::JdkManArgs::parse();
 
