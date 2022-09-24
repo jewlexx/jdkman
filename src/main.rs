@@ -24,5 +24,7 @@ async fn main() -> anyhow::Result<()> {
         .map(get_version_name)
         .collect::<Vec<String>>();
 
+    debug!("Found versions: {:?}", versions_parsed);
+
     Ok(())
 }
