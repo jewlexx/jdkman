@@ -25,7 +25,16 @@ pub async fn list_versions() -> Result<Vec<u8>, AdoptiumApiError> {
         // The following line removes the "-binaries" suffix from the repo name and the "temurin" prefix
         // The repo names are formatted as follows "temurin{version}-binaries"
         // if there is a better way please let me know, but this removes the need for mutability so I'm happy
-        .map(|binary| binary.name["temurin".len()..][.."-binaries".len()].parse())
+        .map(|binary| {
+            let name = binary.name.to_owned();
+
+            let int_chars = name
+                .chars()
+                .map(|c| if c.is_numeric() { c } else { ' ' })
+                .collect::<String>();
+
+            int_chars.parse()
+        })
         .collect::<Result<Vec<u8>, ParseIntError>>()?;
 
     Ok(binary_versions)
