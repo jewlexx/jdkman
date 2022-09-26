@@ -6,8 +6,8 @@ extern crate tracing;
 mod adoptiumapi;
 mod args;
 mod config;
-mod env;
 mod logger;
+mod platform;
 
 lazy_static::lazy_static! {
     pub static ref CLIENT: reqwest::Client = reqwest::Client::builder().user_agent("jdkman").build().unwrap();
@@ -27,7 +27,7 @@ async fn main() -> anyhow::Result<()> {
         .map(get_version_name)
         .collect::<Vec<String>>();
 
-    debug!("Windows Path: {:?}", env::get_windows_path());
+    debug!("Windows Path: {:?}", platform::get_path());
 
     debug!("Found versions: {:?}", versions_parsed);
 

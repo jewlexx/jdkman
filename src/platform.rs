@@ -27,8 +27,15 @@ impl From<String> for Path {
     }
 }
 
-#[cfg(windows)]
-pub fn get_windows_path() -> Result<Path, EnvError> {
+cfg_if::cfg_if! {
+    if #[cfg(windows)] {
+        pub use platform_win::*;
+    } else if #[cfg(unix)] {
+        pub use platform_nix::*;
+    }
+}
+
+pub fn get_path() -> Result<Path, EnvError> {
     let path_var = match std::env::var_os("PATH") {
         Some(v) => v.into_string(),
         None => return Err(EnvError::PathNotFound),
