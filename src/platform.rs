@@ -15,8 +15,16 @@ pub struct Path(Vec<String>);
 
 impl From<String> for Path {
     fn from(path: String) -> Self {
+        const SPLIT_CHAR: char = {
+            if cfg!(windows) {
+                ';'
+            } else {
+                ':'
+            }
+        };
+
         let path_vec = path
-            .split(';')
+            .split(SPLIT_CHAR)
             .map(|s| s.to_string())
             .collect::<Vec<String>>();
 
@@ -32,6 +40,7 @@ cfg_if::cfg_if! {
     }
 }
 
+#[instrument(level = "debug")]
 pub fn get_path() -> Result<Path, EnvError> {
     let path_var = std::env::var("PATH")?;
 

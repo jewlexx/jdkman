@@ -40,6 +40,12 @@ pub async fn list_versions() -> Result<Vec<u8>, AdoptiumApiError> {
     Ok(binary_versions)
 }
 
+pub async fn list_versions_parsed() -> Result<Vec<String>, AdoptiumApiError> {
+    let versions = list_versions().await?;
+
+    Ok(versions.iter().map(get_version_name).collect())
+}
+
 /// This won't work if they update the binary repo names
 ///
 /// But it works for now :)

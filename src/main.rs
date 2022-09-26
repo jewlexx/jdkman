@@ -1,4 +1,4 @@
-use crate::adoptiumapi::{get_version_name, list_versions};
+use crate::adoptiumapi::list_versions_parsed;
 
 #[macro_use]
 extern crate tracing;
@@ -20,16 +20,11 @@ async fn main() -> anyhow::Result<()> {
 
     let args = args::JdkManArgs::parse();
 
-    let versions = list_versions().await?;
+    let versions = list_versions_parsed().await?;
 
-    let versions_parsed = versions
-        .iter()
-        .map(get_version_name)
-        .collect::<Vec<String>>();
+    debug!("Found versions: {:?}", versions);
 
-    debug!("Windows Path: {:?}", platform::get_path());
-
-    debug!("Found versions: {:?}", versions_parsed);
+    debug!("Path: {:?}", platform::get_path());
 
     Ok(())
 }
