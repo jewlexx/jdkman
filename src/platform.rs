@@ -2,15 +2,12 @@ use thiserror::Error as AsError;
 
 #[derive(Debug, AsError)]
 pub enum EnvError {
-    #[error("could not get PATH environment variable")]
-    PathNotFound,
-    #[error("failed to pass OsString")]
-    OsStringError(std::ffi::OsString),
+    #[error("environment error")]
+    VarError(#[from] std::env::VarError),
 }
 
-#[cfg(windows)]
-pub fn get_java_home() -> Option<String> {
-    std::env::var_os("JAVA_HOME").map(|path| path.into_string().unwrap())
+pub fn get_java_home() -> Result<String, EnvError> {
+    Ok(std::env::var("JAVA_HOME")?)
 }
 
 #[derive(Debug)]
@@ -36,13 +33,7 @@ cfg_if::cfg_if! {
 }
 
 pub fn get_path() -> Result<Path, EnvError> {
-    let path_var = match std::env::var_os("PATH") {
-        Some(v) => v.into_string(),
-        None => return Err(EnvError::PathNotFound),
-    };
+    let path_var = std::env::var("PATH")?;
 
-    match path_var {
-        Ok(v) => Ok(Path::from(v)),
-        Err(e) => Err(EnvError::OsStringError(e)),
-    }
+    Ok(Path::from(path_var))
 }
