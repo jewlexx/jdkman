@@ -31,9 +31,7 @@ impl JdkConfig {
 pub async fn init_jdkman_home() -> Result<(), ConfigError> {
     debug!("Creating jdkman home");
 
-    let jdkman_path = dirs::home_dir()
-        .expect("failed to get home directory")
-        .join(".jdkman");
+    let jdkman_path = crate::JDKMAN_HOME.to_owned();
 
     if !jdkman_path.exists() {
         tokio::fs::create_dir(&jdkman_path).await?;

@@ -1,4 +1,4 @@
-use crate::adoptiumapi::list_versions_parsed;
+use std::path::PathBuf;
 
 #[macro_use]
 extern crate tracing;
@@ -11,6 +11,7 @@ mod platform;
 
 lazy_static::lazy_static! {
     pub static ref CLIENT: reqwest::Client = reqwest::Client::builder().user_agent("jdkman").build().unwrap();
+    pub static ref JDKMAN_HOME: PathBuf = dirs::home_dir().unwrap().join(".jdkman");
 }
 
 #[tokio::main]
@@ -19,10 +20,6 @@ async fn main() -> anyhow::Result<()> {
     config::init_jdkman_home().await?;
 
     let args = args::JdkManArgs::parse();
-
-    let versions = list_versions_parsed().await?;
-
-    debug!("Found versions: {:?}", versions);
 
     debug!("Path: {:?}", platform::get_path());
 
