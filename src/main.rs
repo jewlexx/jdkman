@@ -4,7 +4,6 @@ use std::path::PathBuf;
 extern crate tracing;
 
 mod adoptiumapi;
-mod args;
 mod commands;
 mod config;
 mod logger;
@@ -20,7 +19,7 @@ async fn main() -> anyhow::Result<()> {
     logger::init_subscriber();
     config::init_jdkman_home().await?;
 
-    let args = args::JdkManArgs::parse();
+    let args = commands::JdkManArgs::parse();
 
     debug!("Path: {:?}", platform::get_path());
 
