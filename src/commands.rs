@@ -1,6 +1,7 @@
 #[derive(Debug, thiserror::Error)]
 pub enum CommandError {}
 
+#[async_trait::async_trait]
 pub trait Command {
-    fn execute(&self) -> Result<(), CommandError>;
+    async fn execute(&self) -> Result<(), CommandError>;
 }

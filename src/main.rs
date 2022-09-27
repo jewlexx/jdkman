@@ -5,6 +5,7 @@ extern crate tracing;
 
 mod adoptiumapi;
 mod args;
+mod commands;
 mod config;
 mod logger;
 mod platform;

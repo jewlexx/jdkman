@@ -10,6 +10,7 @@ members = ["platforms/*"]
 
 [dependencies]
 anyhow = "1.0.65"
+async-trait = "0.1.57"
 bytes = "1.2.1"
 cfg-if = "1.0.0"
 clap = { version = "3.2.22", features = ["derive"] }
