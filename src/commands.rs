@@ -2,5 +2,5 @@
 pub enum CommandError {}
 
 pub trait Command {
-    fn execute(&self) -> anyhow::Result<()>;
+    fn execute(&self) -> Result<(), CommandError>;
 }
