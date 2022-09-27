@@ -10,7 +10,10 @@ pub struct JdkManArgs {
 #[derive(Debug, Parser)]
 pub enum Command {
     Add,
-    List,
+    List {
+        #[clap(short, long, help = "Only list installed versions")]
+        installed: bool,
+    },
     Remove,
     Use,
 }
