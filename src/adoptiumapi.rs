@@ -1,13 +1,12 @@
 use std::num::ParseIntError;
 
 use serde::{Deserialize, Serialize};
-use thiserror::Error as AsError;
 
 mod gh;
 
 pub type BinaryAdoptiumAssets = Vec<BinaryAdoptiumAsset>;
 
-#[derive(Debug, AsError)]
+#[derive(Debug, thiserror::Error)]
 pub enum AdoptiumApiError {
     #[error("http error")]
     Reqwest(#[from] reqwest::Error),

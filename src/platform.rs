@@ -1,6 +1,4 @@
-use thiserror::Error as AsError;
-
-#[derive(Debug, AsError)]
+#[derive(Debug, thiserror::Error)]
 pub enum EnvError {
     #[error("environment error")]
     VarError(#[from] std::env::VarError),

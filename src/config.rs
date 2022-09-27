@@ -1,8 +1,7 @@
 use parking_lot::Mutex;
 use serde::{Deserialize, Serialize};
-use thiserror::Error as AsError;
 
-#[derive(Debug, AsError)]
+#[derive(Debug, thiserror::Error)]
 pub enum ConfigError {
     #[error("failed to serialize config")]
     SerializeError(#[from] toml::ser::Error),

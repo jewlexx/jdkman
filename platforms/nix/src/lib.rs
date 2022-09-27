@@ -4,9 +4,7 @@ use std::{
     path::Path,
 };
 
-use thiserror::Error as AsError;
-
-#[derive(Debug, AsError)]
+#[derive(Debug, thiserror::Error)]
 pub enum PlatformError {
     #[error("std io error")]
     IOError(#[from] std::io::Error),
